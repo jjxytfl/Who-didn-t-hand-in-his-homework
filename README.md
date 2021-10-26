@@ -1,2 +1,2 @@
 # Who-didn-t-hand-in-his-homework
-Check who hasn't handed in their homework
+刚刚来到Github，想着上传一些什么，有没有什么拿得出手的东西，索性就分享一下我的第一个真实有用的代码吧，用c写的，因为要经常收作业，班里一些倒霉蛋还总是拖，每次检查总要浪费我好长时间，就写下了这个东西，代码没有做太多修改，只是加了一些注释，纪念一下 (=^_^=)
