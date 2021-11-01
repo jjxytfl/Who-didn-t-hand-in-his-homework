@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <io.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LINE 1024    
+
+//班级人数 
+#define CLASS 60        
+
+//欲查找的文件，需要注意的是转义字符前要加'\',支持通配符
+const char *to_search = "E:\\A1952 21 下\\软件工程导论\\\*.docx";//真实路径: E:\A1952 21 下\软件工程导论
+FILE *fp;
+
+//学号在字符串中第一次出现的位置   例如： "25_张三" 这里就设置为0   只能有两位小数
+#define FIRST 0 
+
+int _1952[CLASS];
+
+int main()
+{
+	int i = 0;
+	long handle;
+	struct _finddata_t fileinfo;
+
+	handle = _findfirst(to_search, &fileinfo); //判断有无文件
+	if (handle == -1){
+		return -1;
+	}
+
+	_1952[i++] = (fileinfo.name[FIRST] - '0') * 10 + (fileinfo.name[FIRST+1] - '0');
+	while (!_findnext(handle, &fileinfo))
+	{
+		_1952[i++] = (fileinfo.name[FIRST] - '0') * 10 + (fileinfo.name[FIRST+1] - '0');
+	}
+	_findclose(handle);
+
+	char buf[MAX_LINE];
+	fp = fopen("class.txt", "r");//存放学号的文件 里面的格式为 "25张三"
+	if (fp == 0)
+	{
+		printf("can't open file\n");
+		return 0;
+	}
+	printf("未交作业的同学:\n\n");
+
+	for (int j = 0; j < i; j++)
+	{
+		if (fgets(buf, MAX_LINE, fp) == NULL){
+			break;
+		}
+		while (_1952[j] >(buf[0] - '0') * 10 + buf[1] - '0')
+		{
+			printf(buf);
+			if (fgets(buf, MAX_LINE, fp) == NULL){
+				break;
+			}
+		}
+
+	}
+
+	while (1)
+	{
+		if (_1952[i - 1] <(buf[0] - '0') * 10 + buf[1] - '0')
+			printf(buf);
+		if (fgets(buf, MAX_LINE, fp) == NULL){
+			break;
+		}
+	}
+	fclose(fp);
+
+	printf("\n共%d个人\n\n\n", 55 - i);
+	fclose(fp);
+	system("pause");
+	return 0;
+}
